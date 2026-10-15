@@ -54,7 +54,7 @@ All matrices are dense NumPy arrays in v0.1; sparse storage is left for a later 
 | R2 | SOR: sweeps against $\omega \in [1.00, 1.95]$ on L3 ($n = 20$), with $\omega_{\text{opt}}$ marked | a sharp minimum near 1.74 |
 | R3 | Residual history (log scale) for the three methods on L3 ($n = 20$), with the lines $\rho(T)^k$ | parallel lines |
 | R4 | The failure cases L5 and L6: $\rho(T)$ and the behaviour after 50 sweeps | Jacobi diverges on L5 and converges on L6; Gauss–Seidel the opposite |
-| R5 | Residual against error on L3 ($n = 40$, condition number 681) at the stopping point | relative residual $1.0 \times 10^{-8}$ but relative error $2.3 \times 10^{-7}$; the bound $\kappa(A)\, \lVert r\rVert / \lVert b\rVert = 6.8 \times 10^{-6}$ |
+| R5 | Residual against error on L3 ($n = 40$, condition number 681) at the stopping point | relative residual $1.0 \times 10^{-8}$ but relative error about $3.8 \times 10^{-7}$ (Jacobi; exact solution all ones); the bound $\kappa(A)\, \lVert r\rVert / \lVert b\rVert = 6.8 \times 10^{-6}$ |
 
 ### 4.3 Checks on the checks (private maintainer tests)
 

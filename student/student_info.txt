@@ -1,0 +1,14 @@
+# Fill in each line after the colon. Replace the text in < > completely.
+# This information appears at the top of your verification report.
+
+name: <your full name>
+matric_number: <your matriculation number>
+department: <your department>
+institution: <your university or polytechnic>
+supervisor: <your supervisor's name>
+
+# Say whether you used AI tools (ChatGPT, Claude, Gemini, Copilot, ...) and for
+# what. Using them to understand the method or to find a bug is allowed if you
+# say so here. Your analysis and write-up must be your own. Continue on
+# indented lines if you need more space.
+ai_use: <for example: "None." or "I asked ChatGPT to explain why Gauss-Seidel converges faster than Jacobi.">
