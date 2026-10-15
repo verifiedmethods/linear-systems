@@ -1,6 +1,6 @@
 # Unit A2 design: iterative methods for linear systems
 
-Status: draft for review, 16 October 2026. Nothing is implemented yet. The numbers below come from a reference run on 16 October 2026; the script is in the private `solutions` repository (`linear_systems/reference_study.py`).
+Status: approved 16 October 2026 (decisions in Section 9). The numbers below come from a reference run on 16 October 2026; the script is in the private `solutions` repository (`linear_systems/reference_study.py`).
 
 ## 1. Purpose
 
@@ -103,11 +103,11 @@ Time: the full check takes under 2 seconds (Gauss–Seidel on $n = 40$ to $10^{-
 
 As in A1: how to confirm a report; about ten viva questions (for example "Why does Gauss–Seidel need about half as many sweeps as Jacobi on this problem?", "Show where your Gauss–Seidel code uses the newest values", "Why does Jacobi diverge on L5 although the matrix is symmetric positive definite?", "Your residual is $10^{-8}$; what can you say about the error?"); a rubric; the AI-use statement.
 
-## 9. Open questions for review
+## 9. Decisions (approved 16 October 2026)
 
-1. **Methods:** Jacobi, Gauss–Seidel and SOR for v0.1? (AOR and symmetric SOR could come later.)
-2. **API:** students write one sweep and the harness iterates. Agreed, or should students also write the iteration loop with its stopping test?
-3. **Gate G3** tolerance of $10^{-3}$ relative: acceptable?
-4. **The fourth brief** on refined and accelerated variants: include it in v0.1 (neutral framing as in Section 7), leave it for later, or drop it?
-5. **Brief 2** context: is a heated plate right, or would a Nigerian example be better (for example groundwater head between rivers, or temperature in a building wall)?
-6. **Unit name and address:** `linear-systems` (https://verifiedmethods.github.io/units/linear-systems/)?
+1. Methods: Jacobi, Gauss–Seidel and SOR in v0.1. AOR, symmetric SOR and other variants later.
+2. API: students write one sweep; the harness iterates and applies the stopping test.
+3. Gate G3 tolerance: $10^{-3}$ relative.
+4. The brief on refined and accelerated variants: later (recorded in the plan's list of later work).
+5. Brief 2: the heated plate.
+6. Name and address: `linear-systems`, https://verifiedmethods.github.io/units/linear-systems/
