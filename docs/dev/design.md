@@ -1,6 +1,6 @@
 # Unit A2 design: iterative methods for linear systems
 
-Status: approved 16 October 2026 (decisions in Section 9). The numbers below come from a reference run on 16 October 2026; the script is in the private `solutions` repository (`linear_systems/reference_study.py`).
+Status: approved 16 October 2026 (decisions in Section 9); prototype v0.1.0.dev0 published for trial on 16 October 2026. The numbers below come from a reference run on 16 October 2026; the script is in the private `solutions` repository (`linear_systems/reference_study.py`).
 
 ## 1. Purpose
 
