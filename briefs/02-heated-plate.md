@@ -53,8 +53,9 @@ they stop?
    `CONTRIBUTION.md`.
 
 **Practical note:** Gauss–Seidel and SOR loop over rows in plain Python, so keep
-Gauss–Seidel to $m \le 20$ (400 unknowns); SOR with a good $\omega$ handles
-$m = 40$ in a few seconds.
+Gauss–Seidel to $m \le 20$ (400 unknowns). Try smaller grids first; $m = 40$
+for SOR is optional and can take longer on a slower computer. The matrices
+here are stored densely, even though the underlying operator is sparse.
 
 ## Your contribution
 

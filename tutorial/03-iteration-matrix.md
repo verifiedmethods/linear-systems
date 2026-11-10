@@ -71,5 +71,6 @@ $$
 $$
 
 For $n = 20$ this is 0.988831. Since $\log \rho \approx -\pi^2/(2(n+1)^2)$, the
-number of sweeps grows like $n^2$: doubling $n$ multiplies the work by about
-four. Check this in table R1 of your report.
+number of sweeps grows like $n^2$: doubling $n$ gives roughly four times as
+many sweeps, each of which also costs more on the larger system. Check the
+sweep counts in table R1 of your report.

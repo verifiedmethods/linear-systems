@@ -9,7 +9,9 @@ Python set up once, as in tutorial section 0.
    (other imports, file access, references to `vm`): the file runs on your
    computer, and code that changes the checks could make them pass falsely. The
    report lists the file's imports and warns about unexpected ones.
-2. Download a fresh copy of the unit (the same version as on the report).
+2. Obtain a fresh copy of the unit with the same check-suite fingerprint as
+   the report. These development prototypes can change without a version-label
+   change: keep the original zip and its download SHA-256 with each submission.
 3. Copy the student's `student` folder into it, replacing the one there.
 4. In the unit's main folder (the one that contains `verify.py`), run
    `python verify.py --strict`.
@@ -23,6 +25,8 @@ Alternatively, point the checks at the student's file directly:
 python verify.py --strict --steps path/to/student/steps.py
 ```
 
-This takes about two minutes. Passing the gates is strong evidence that the code
-implements the method correctly; it does not show who wrote it. Use a few of the
-viva questions for that.
+Passing gives evidence about the stated test cases, not a proof for every
+input or a validation of the whole project. A fingerprint identifies code;
+it does not authenticate an HTML report. Your rerun confirms the results,
+and the viva helps assess understanding. Allow time for setup, inspection,
+the rerun and the student's explanation.

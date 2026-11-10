@@ -2,7 +2,7 @@
 
 This tutorial teaches Jacobi's method, the Gauss–Seidel method and successive
 over-relaxation (SOR) for $Ax = b$, and how to *verify* your code: to show,
-with evidence, that it converges exactly as fast as the theory predicts. Work
+with evidence, how its convergence relates to the theory on specified test problems. Work
 through the sections in order; each one ends with something to do.
 
 | Section | Topic |
@@ -17,13 +17,20 @@ through the sections in order; each one ends with something to do.
 | [7](07-residual-and-error.md) | Residual, error and when to stop |
 | [8](08-report-and-brief.md) | Reading your report and choosing a project brief |
 
-**What you need:** a laptop (4 GB of memory is enough), Python 3.10 or later
-with NumPy, SciPy and Matplotlib, and about four to six hours for sections 0
-to 7, best spread over several sittings.
+**What you need:** a computer with Python 3.10 or later, NumPy, SciPy and
+Matplotlib. Plan several sessions; setup, tutorial and project time depend on
+your background. The code and reports work offline after installation; section
+0 explains how to prepare formatted tutorial material for offline reading.
 
 **What you should know already:** matrices and vectors, eigenvalues, and basic
 Python (variables, loops, functions, and NumPy arrays). Unit A1 is helpful but
 not required.
 
-**What you hand in:** your `student/steps.py`, your verification report, your
-completed `student/CONTRIBUTION.md`, and the write-up for your project brief.
+**What you hand in:** your `student` folder (including `steps.py`,
+`student_info.txt` and completed `CONTRIBUTION.md`), your verification report,
+and the agreed assignment or project write-up.
+
+**Further reading:** Driscoll and Braun's
+[*Fundamentals of Numerical Computation*, Python edition](https://fncbook.com/python/)
+provides additional explanations and examples. Your lecturer's course text
+should guide the depth of theory expected.

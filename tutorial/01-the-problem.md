@@ -10,14 +10,15 @@ temperature at every point of a grid).
 
 Gaussian elimination (or an LU factorisation) solves $Ax = b$ in a fixed number
 of steps, about $\tfrac23 n^3$ arithmetic operations for a dense matrix. For
-$n = 1000$ that is under a second on a laptop, so for small and moderate
-dense systems a direct method is usually the right choice.
+small and moderate dense systems, a direct solver is often a suitable baseline;
+the time depends on the computer and implementation.
 
 ## Iterative methods
 
 For the systems that come from differential equations, $n$ can be in the
 millions, and almost every entry of $A$ is zero (the matrix is *sparse*).
-Elimination then fills in many of the zeros and becomes far too expensive.
+Elimination can fill in zeros and use substantial memory, although sparse
+direct solvers remain useful for many problems.
 An **iterative method** starts from a guess $x^{(0)}$ and improves it, one
 **sweep** at a time:
 
@@ -28,6 +29,10 @@ $$
 where each sweep costs about as much as one multiplication by $A$. The
 questions are: does the sequence converge, and how many sweeps does it need?
 This unit answers both, with evidence.
+
+The supplied matrices and student functions use dense NumPy arrays for
+teaching. They are not optimised large-scale sparse solvers. Use the small
+test sizes in the unit; an efficient sparse implementation is further work.
 
 ## The splitting $A = D - L - U$
 

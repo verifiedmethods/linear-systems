@@ -1,5 +1,8 @@
 # AI tools in unit A2: a statement you can adopt
 
+Apply your course's assessment and AI rules first. The following is a suggested
+statement for a lecturer to adopt or adapt, not permission to override those rules.
+
 Students may use AI tools (such as ChatGPT, Claude, Gemini or Copilot) to
 explain the methods, to answer questions about Python, and to help find bugs,
 provided they **disclose this** in `student/student_info.txt`. The disclosure
@@ -18,6 +21,5 @@ Any claim in a report that a computation succeeded must be supported by an
 actual run (the verification report or the student's own output), never by text
 produced by an AI tool.
 
-This statement will be revised to align with national guidance on AI in
-universities (for example from the National Universities Commission) when it is
-published.
+Review the statement against your institution's current requirements before
+assigning the unit.

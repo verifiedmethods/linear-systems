@@ -31,12 +31,15 @@ with $\omega_{\text{opt}} = \dfrac{2}{1 + \sin\frac{\pi}{n+1}}$, which is
 - **Figure R2 and table R2:** sweeps against $\omega$. Find the best $\omega$
   and compare it with $\omega_{\text{opt}}$. How quickly does the work grow if
   $\omega$ is chosen badly?
-- **Figure R3:** the residual against the sweep number. After the first sweeps,
-  each curve should run parallel to its dashed line, which falls by $\rho(T)$
-  per sweep.
+- **Figure R3:** the residual against the sweep number. Compare each history
+  with its dashed reference line, which falls by $\rho(T)$ per sweep. Identify
+  any interval with a similar slope, and discuss transients or oscillations;
+  an exact stepwise match is not expected in general.
 
 ## Direct or iterative?
 
 For the small dense systems in this unit, `numpy.linalg.solve` is faster than
-any of these methods. Iterative methods pay off for large sparse systems, where
-elimination is far too expensive; brief 2 shows such a problem growing.
+these educational implementations. For large sparse systems, solver choice
+depends on sparsity, conditioning, preconditioning and memory. Brief 2 studies
+growing systems using deliberately modest sizes and dense arrays; it is not a
+benchmark of production sparse solvers.

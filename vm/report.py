@@ -28,8 +28,9 @@ STATEMENT = (
 )
 SUPERVISOR_CHECK = (
     "To confirm it, copy the student's <code>student</code> folder into your own fresh copy of this unit and run "
-    "<code>python verify.py</code>. Your report should show the same gates, and the check-suite fingerprint should "
-    "match the one published for this release on the unit's page at verifiedmethods.github.io."
+    "<code>python verify.py --strict</code>. Your report should show the same gates and student-code fingerprint, and the check-suite fingerprint should "
+    "match the stated checker on the unit's page at verifiedmethods.github.io. "
+    "For development prototypes, keep the original zip and its SHA-256 with the submission."
 )
 
 CSS = """
@@ -43,7 +44,7 @@ h1 { font-size: 26px; margin: 0 0 2px; }
 h2 { font-size: 19px; margin: 34px 0 10px; padding-top: 6px; border-top: 1px solid var(--line); }
 h3 { font-size: 16px; margin: 22px 0 8px; }
 .sub { color: var(--ink2); margin: 0 0 18px; }
-.grid { display: grid; grid-template-columns: max-content 1fr; gap: 4px 16px; background: var(--soft);
+.grid { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 16px; background: var(--soft);
         border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; }
 .grid dt { color: var(--ink2); }
 .grid dd { margin: 0; overflow-wrap: anywhere; }
@@ -69,6 +70,12 @@ table.narrow { width: auto; min-width: 50%; }
 td.order { color: var(--ink2); }
 footer { margin-top: 36px; color: var(--ink3); font-size: 12px; }
 .block { break-inside: avoid; }
+@media screen and (max-width: 32em) {
+  .grid { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .grid dt { margin-top: 8px; }
+  .grid dd { margin-bottom: 4px; }
+  h2 .mono { overflow-wrap: anywhere; }
+}
 @media print { body { font-size: 12px; } main { padding: 0; } h2, h3 { break-after: avoid; }
                .block, figure, table, .statement { break-inside: avoid; }
                figure img { max-width: 470px; } }
@@ -222,6 +229,8 @@ def _gates_table(r) -> str:
 
 
 def _block(title, body, note=""):
+    if body.startswith("<table"):
+        body = f"<div class='wrap' tabindex='0' role='region' aria-label='{_e(title)}'>{body}</div>"
     return f"<div class='block'><h3>{title}</h3>{note}{body}</div>"
 
 

@@ -4,7 +4,7 @@ This folder is for supervisors and lecturers. Students may read it too.
 
 | File | Use |
 |---|---|
-| [how-to-check.md](how-to-check.md) | Confirming a student's verification report in two minutes |
+| [how-to-check.md](how-to-check.md) | Rerunning checks and comparing a student's verification report |
 | [viva-questions.md](viva-questions.md) | Questions that test understanding of the code and the results |
 | [rubric.md](rubric.md) | A marking rubric for the computational chapter |
 | [ai-use.md](ai-use.md) | A statement on AI tools that you can adopt or adapt |

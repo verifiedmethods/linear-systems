@@ -4,10 +4,12 @@
 > (step 2), or reuse your A1 environment: activate it as in A1, then go to this
 > unit's folder with `cd`.
 
-You do this once. It takes about ten minutes plus download time. Steps 1 and 2
-need internet access (Python itself is about 30 MB; Anaconda is about 1 GB);
-after that everything runs offline. If you have no internet at home, do steps 1
-and 2 at a place that has it.
+Set up once, allowing time for downloads and troubleshooting. Steps 1 and 2
+need internet access; afterwards the supplied code, data and generated reports
+work offline. The zip does not include Python or its packages. For formatted
+tutorials offline, save the web sections as PDFs while connected, or use a
+Markdown reader that supports equations; the bundled tutorial files are
+Markdown source.
 
 **On Windows, before you start:**
 
@@ -20,11 +22,13 @@ and 2 at a place that has it.
 
 ## Step 1. Python
 
-You need Python 3.10 or later.
+You need Python 3.10 or later. Maintainer CI currently tests Python 3.10–3.13;
+lecturers should check the environment they intend to use for a class.
 
-- **Windows:** install Python from [python.org](https://www.python.org/downloads/)
-  and tick **"Add python.exe to PATH"** on the first screen of the installer.
-  Or install **Anaconda** (see the box below).
+- **Windows:** follow the [official Python installation guidance](https://docs.python.org/3/using/windows.html).
+  Current installations may use the Python install manager; older installers
+  offer **"Add python.exe to PATH"**. Follow the instructions for your installer.
+  Or use an existing Anaconda installation (see below).
 - **macOS:** install Python from python.org, or with Homebrew (`brew install python`).
 - **Linux:** Python 3 is usually installed already.
 
@@ -37,8 +41,8 @@ Check it in a terminal (on Windows, Command Prompt):
 
 ## Step 2. A virtual environment for this unit
 
-A *virtual environment* is a private copy of Python for this folder, so that
-installing packages cannot break anything else on your computer. Open a
+A *virtual environment* isolates this unit's Python packages from those used
+by other projects. Open a
 terminal **in this unit's folder** (the folder that contains `verify.py`) and
 run the three lines for your system.
 
@@ -83,7 +87,7 @@ It should print `ready`.
 | `No module named 'numpy'` | The packages are not installed in the Python you are using | Activate the environment, then run the `pip install` line again |
 | `'python' is not recognized` (Windows) | The environment is not active, or Python is not on your PATH | Activate the environment (step 2, second line). Before step 2, use `py` instead |
 | Typing `python` opens the Microsoft Store (Windows) | Windows' placeholder "app alias" for Python | Install Python from python.org, or turn off the alias in Settings, Apps, Advanced app settings, App execution aliases |
-| `'py' is not recognized` (Windows) | Python came from the Microsoft Store, which has no `py` command | Use `python -m venv .venv` in step 2 instead of `py -m venv .venv` |
+| `'py' is not recognized` (Windows) | The launcher or install manager is unavailable in this terminal | If `python --version` works, use `python -m venv .venv`; otherwise follow the official installation guidance above and reopen Command Prompt |
 | `running scripts is disabled on this system` (Windows PowerShell) | PowerShell blocks the activation script | Use Command Prompt instead of PowerShell |
 | `ensurepip is not available` (Ubuntu, Debian) | The virtual-environment module is not installed | Run `sudo apt install python3-venv`, then step 2 again |
 
@@ -91,6 +95,8 @@ It should print `ready`.
 
 Open `student/student_info.txt` in a text editor (Notepad is fine) and fill in
 every line. These details appear at the top of your report.
+Share the report through your lecturer's agreed submission route. Do not post
+student identifiers in a public repository or issue.
 
 ## Run the checks for the first time
 
@@ -114,6 +120,17 @@ Report: .../report/verification-report.html
 That is correct: you have not written anything yet. Open the report file in
 any web browser to see what it looks like. If you see a line starting
 `Remember to fill in`, some of your details are still empty.
+
+## Edit, save and rerun
+
+Open `student/steps.py` in a code editor or plain-text editor. Keep its
+filename and the supplied function names. On Windows, check that the filename
+has not become `steps.py.txt`; do not use a word processor.
+
+Save your changes, then run `python verify.py` again in the terminal in the
+unit's folder. Enter terminal commands at the system prompt, not at Python's
+`>>>` prompt; type `exit()` to leave that prompt if necessary. Your browser
+may need a refresh to show the new report.
 
 ## The folders
 

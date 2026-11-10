@@ -12,8 +12,8 @@ Gauss–Seidel and successive over-relaxation), then show with evidence that the
 work: the observed convergence factor against the spectral radius of the
 iteration matrix, the number of sweeps as the system grows, the choice of the
 relaxation factor, and the cases where the methods fail. A single command checks
-your code and writes a **verification report** that your supervisor can read in
-two minutes.
+your code and writes a **verification report** that your lecturer can inspect
+alongside your explanation and a rerun of the checks.
 
 ## Quick start
 
@@ -43,7 +43,9 @@ Before submitting, run `python verify.py --strict`. This requires all three
 methods to be implemented and pass every gate. Ordinary local runs let you
 check unfinished work; GitHub Actions uses strict checking automatically.
 
-Everything runs offline, in a few seconds, on a modest laptop.
+The supplied code, data and generated reports run offline after setup. The
+tutorial files in this zip are Markdown source; for formatted offline reading,
+save the web sections as PDFs or use a Markdown reader with equation support.
 
 ## For supervisors
 
