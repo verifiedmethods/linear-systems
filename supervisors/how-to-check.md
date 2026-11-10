@@ -10,8 +10,8 @@ Python set up once, as in tutorial section 0.
    computer, and code that changes the checks could make them pass falsely. The
    report lists the file's imports and warns about unexpected ones.
 2. Obtain a fresh copy of the unit with the same check-suite fingerprint as
-   the report. These development prototypes can change without a version-label
-   change: keep the original zip and its download SHA-256 with each submission.
+   the report. Use the versioned pilot release; keep its original zip and download SHA-256
+   with each submission. Corrections will use a new version.
 3. Copy the student's `student` folder into it, replacing the one there.
 4. In the unit's main folder (the one that contains `verify.py`), run
    `python verify.py --strict`.

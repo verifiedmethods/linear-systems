@@ -12,6 +12,7 @@ Outputs (VERSION from vm/__init__.py):
 from __future__ import annotations
 
 import hashlib
+import json
 import sys
 import zipfile
 from pathlib import Path
@@ -19,7 +20,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from vm import __version__  # noqa: E402
+from vm import UNIT_ID, UNIT_SLUG, __version__  # noqa: E402
 from vm.fingerprint import suite_fingerprint  # noqa: E402
 
 DATE = (2026, 1, 1, 0, 0, 0)  # fixed timestamps, so rebuilding gives identical zips
@@ -58,23 +59,32 @@ def main() -> int:
     top = f"verifiedmethods-linear-systems-{__version__}"
 
     bundle = dist / f"{top}.zip"
-    workflow = (ROOT / "tools" / "student-verify.yml.in").read_text(encoding="utf-8").replace("@VERSION@", __version__)
+    official = dist / f"vm-official-{__version__}.zip"
+    with zipfile.ZipFile(official, "w") as zf:
+        for rel in ["verify.py"] + _files(["vm"]):
+            _add(zf, rel, (ROOT / rel).read_bytes())
+    official_sha = _sha256(official)
+    workflow = ((ROOT / "tools" / "student-verify.yml.in").read_text(encoding="utf-8")
+                .replace("@VERSION@", __version__).replace("@CHECKER_SHA256@", official_sha))
     with zipfile.ZipFile(bundle, "w") as zf:
         for rel in STUDENT_FILES + _files(STUDENT_DIRS):
             _add(zf, f"{top}/{rel}", (ROOT / rel).read_bytes())
         _add(zf, f"{top}/.github/workflows/verify.yml", workflow.encode("utf-8"))
         _add(zf, f"{top}/.gitignore", STUDENT_GITIGNORE.encode("utf-8"))
 
-    official = dist / f"vm-official-{__version__}.zip"
-    with zipfile.ZipFile(official, "w") as zf:
-        for rel in ["verify.py"] + _files(["vm"]):
-            _add(zf, rel, (ROOT / rel).read_bytes())
-
-    (dist / "SHA256SUMS").write_text(
-        "".join(f"{_sha256(p)}  {p.name}\n" for p in (bundle, official)), encoding="utf-8"
-    )
     fp = suite_fingerprint()
-    (dist / "check-suite-fingerprint.txt").write_text(f"{__version__} {fp}\n", encoding="utf-8")
+    fingerprint = dist / "check-suite-fingerprint.txt"
+    fingerprint.write_text(f"{__version__} {fp}\n", encoding="utf-8")
+    manifest = dist / "manifest.json"
+    manifest.write_text(json.dumps({
+        "schema": 1, "unit": UNIT_ID, "slug": UNIT_SLUG, "version": __version__,
+        "check_suite_fingerprint": fp,
+        "files": {p.name: {"sha256": _sha256(p)} for p in (bundle, official)},
+    }, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    (dist / "SHA256SUMS").write_text(
+        "".join(f"{_sha256(p)}  {p.name}\n" for p in (bundle, official, manifest, fingerprint)),
+        encoding="utf-8",
+    )
     print(f"{bundle.name} ({bundle.stat().st_size // 1024} KB)")
     print(f"{official.name} ({official.stat().st_size // 1024} KB)")
     print(f"check-suite fingerprint {fp}")

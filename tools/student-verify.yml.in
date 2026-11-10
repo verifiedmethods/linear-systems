@@ -17,6 +17,7 @@ jobs:
         if: ${{ !contains('@VERSION@', 'dev') }}
         run: |
           curl -fsSL -o vm-official.zip "https://github.com/verifiedmethods/linear-systems/releases/download/v@VERSION@/vm-official-@VERSION@.zip"
+          echo "@CHECKER_SHA256@  vm-official.zip" | sha256sum --check -
           rm -rf vm verify.py
           unzip -q vm-official.zip
       - name: Run the checks

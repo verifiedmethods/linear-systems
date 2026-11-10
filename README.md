@@ -3,7 +3,7 @@
 Part of **verifiedmethods**: open, verification-first units for the
 computational methods used in Nigerian STEM projects and theses.
 
-> **Status:** prototype for trial (version 0.1.0.dev0); not yet a formal release.
+> **Status:** pilot prerelease (version 0.1.0a1), for small teaching trials.
 >
 > Website: https://verifiedmethods.github.io · Contact: abdgafartunde@yahoo.com
 
@@ -70,4 +70,4 @@ CC BY 4.0 (see `LICENSE-docs`).
 
 ## Citation
 
-See `CITATION.cff`. A DOI will be added at the first release.
+See `CITATION.cff`. A DOI is planned for the first stable release.

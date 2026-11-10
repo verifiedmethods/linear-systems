@@ -7,7 +7,8 @@ authors:
     given-names: "Abd'gafar Tunde"
     orcid: "https://orcid.org/0000-0003-1641-7196"
     affiliation: "School of Mathematics, Jilin University"
-version: "0.1.0.dev0"
+version: "0.1.0a1"
+date-released: "2026-11-11"
 license:
   - BSD-3-Clause
   - CC-BY-4.0
@@ -17,7 +18,7 @@ abstract: >-
   An open, verification-first teaching unit on stationary iterative methods for
   linear systems (Jacobi, Gauss-Seidel, SOR). Students write one sweep of each
   method and verify it against the theory: the observed convergence factor must
-  match the spectral radius of the iteration matrix. An automatic check produces
+  match the spectral radius on a specified Poisson test problem. An automatic check produces
   a verification report for their supervisor.
 keywords:
   - numerical analysis

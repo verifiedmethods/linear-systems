@@ -30,7 +30,7 @@ SUPERVISOR_CHECK = (
     "To confirm it, copy the student's <code>student</code> folder into your own fresh copy of this unit and run "
     "<code>python verify.py --strict</code>. Your report should show the same gates and student-code fingerprint, and the check-suite fingerprint should "
     "match the stated checker on the unit's page at verifiedmethods.github.io. "
-    "For development prototypes, keep the original zip and its SHA-256 with the submission."
+    "Keep the original versioned zip and its SHA-256 with the submission."
 )
 
 CSS = """
