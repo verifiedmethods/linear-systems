@@ -13,10 +13,14 @@ VM_DIR = Path(__file__).resolve().parent
 ROOT = VM_DIR.parent
 
 
+def source_sha256(source: bytes) -> str:
+    """Hash a source snapshot, normalising Windows line endings."""
+    return hashlib.sha256(source.replace(b"\r\n", b"\n")).hexdigest()
+
+
 def file_sha256(path: Path) -> str:
     """SHA-256 of a text file with line endings normalised, so Windows and Linux copies agree."""
-    data = Path(path).read_bytes().replace(b"\r\n", b"\n")
-    return hashlib.sha256(data).hexdigest()
+    return source_sha256(Path(path).read_bytes())
 
 
 def suite_fingerprint(vm_dir: Path = VM_DIR, verify_script: Path = ROOT / "verify.py") -> str:

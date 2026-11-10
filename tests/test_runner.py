@@ -26,7 +26,8 @@ def test_fingerprint_ignores_line_endings(tmp_path):
     assert file_sha256(a) == file_sha256(b)
 
 
-def test_main_on_the_shipped_stubs(root, tmp_path):
+def test_main_on_the_shipped_stubs(root, tmp_path, monkeypatch):
+    monkeypatch.delenv("GITHUB_ACTIONS", raising=False)
     out = tmp_path / "report"
     code = main(["--steps", str(root / "student" / "steps.py"), "--out", str(out)])
     assert code == 0

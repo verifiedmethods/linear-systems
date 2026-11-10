@@ -1,5 +1,6 @@
-# Runs the official checks on every push and keeps the verification report as a
+# Runs the checks in strict submission mode on every push and keeps the report as a
 # downloadable artifact (Actions tab -> latest run -> Artifacts).
+# --ci requires all methods to be implemented and pass; a release uses the official suite below.
 name: verify
 on:
   push:

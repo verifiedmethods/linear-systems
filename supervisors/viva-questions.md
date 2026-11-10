@@ -15,8 +15,10 @@ in front of them.
 
 ## About the results
 
-5. Gate G3 compares your observed factor with $\rho(T)$. Why should the error
-   fall by $\rho(T)$ per sweep, and why only after the first few sweeps?
+5. Gate G3 compares an average observed factor with $\rho(T)$ on a specified
+   Poisson problem. Under what conditions does the spectral radius describe
+   the eventual error decay? How can transients or the initial error change
+   what you observe?
 6. Why does Gauss–Seidel need about half as many sweeps as Jacobi on the 1D
    Poisson problem? Is Gauss–Seidel always better? (Point to L6.)
 7. Why do Jacobi's sweeps grow about four times when $n$ doubles, but SOR's only

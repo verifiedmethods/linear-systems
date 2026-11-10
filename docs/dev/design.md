@@ -12,7 +12,7 @@ A2 is the second undergraduate unit. It teaches the three classical stationary i
 | Gauss–Seidel | $x^{(k+1)} = (D - L)^{-1}\big(b + U x^{(k)}\big)$, computed row by row using the newest values | $(D - L)^{-1} U$ |
 | SOR | each Gauss–Seidel value relaxed: $x_i^{(k+1)} = (1 - \omega)\,x_i^{(k)} + \omega\,x_i^{\text{GS}}$ | $(D - \omega L)^{-1}\big((1 - \omega) D + \omega U\big)$ |
 
-The error satisfies $e^{(k+1)} = T e^{(k)}$, so each method converges for every starting vector exactly when the spectral radius $\rho(T) < 1$, and the error falls asymptotically by a factor $\rho(T)$ per sweep. That one fact is the verification idea of the unit: **the observed convergence factor must match $\rho(T)$**.
+The error satisfies $e^{(k+1)} = T e^{(k)}$, so each method converges for every starting vector exactly when the spectral radius $\rho(T) < 1$. When a dominant eigenmode is present and governs the eventual decay, the rate is described by $\rho(T)$; transients and initial-mode content can change observed ratios. The verification idea is a **finite-window comparison with $\rho(T)$ on the specified Poisson problem**, not a universal equality for stepwise error norms.
 
 **Who it is for:** final-year undergraduates (the "Jacobi versus Gauss–Seidel" project); MSc students working on accelerated, preconditioned or refined variants, which are an active research line in Nigerian mathematics departments (FUT Minna in particular).
 
@@ -74,6 +74,13 @@ Broken versions that must fail at least one gate:
 ## 5. Software
 
 The verification report, the runner (student information, import scan, captured prints, exit codes), the fingerprints and the bundle builder are the same as A1's. For v0.1 they are copied from A1 and adapted. When the template is refined (plan weekend 13) the shared parts move to one place used by every unit.
+
+The runner executes, fingerprints, and scans a single source snapshot without
+consulting cached bytecode. Local runs support incomplete work; `--strict`,
+`--ci`, or `GITHUB_ACTIONS=true` require every method to pass. In `iterate()`,
+a zero right-hand side switches residual histories and the stopping tolerance
+to the absolute 2-norm; a zero exact solution similarly uses absolute errors.
+Nonzero denominators retain the existing relative norms.
 
 Problem-specific modules: `problems.py` (L1 to L6), `iterate.py` (the iteration driver, residual and error histories), `study.py` (convergence factor, sweep counts, $\omega$ sweep), `checks.py` (G1 to G4, R1 to R5).
 

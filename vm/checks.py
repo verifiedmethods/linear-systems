@@ -220,7 +220,7 @@ def gate_factor(step, spec: MethodSpec):
         elif math.isfinite(f):
             others = {m.name: rho_of(m, prob.A, OMEGA_G3) for m in METHODS if m.key != spec.key}
             close = [n for n, r in others.items() if abs(f - r) / r <= FACTOR_RTOL]
-            hint = (f"Your error falls by {f:.6f} per sweep, but {spec.name}'s spectral radius here is {rho:.6f}."
+            hint = (f"Your average factor over the tested sweep window is {f:.6f}, but {spec.name}'s spectral radius here is {rho:.6f}."
                     + (f" Your factor matches {close[0]}'s: check which values your sweep uses." if close else
                        " Check the formula against tutorial section " + spec.tutorial_section + "."))
         else:

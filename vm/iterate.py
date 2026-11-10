@@ -28,23 +28,27 @@ def iterate(sweep, A, b, x0, tol=1e-8, maxit=10000, x_exact=None, name="sweep"):
     """Apply ``sweep(A, b, x)`` until the relative residual is at most ``tol``.
 
     Returns a dict with ``sweeps`` (number used), ``x``, ``converged`` and the
-    histories ``residual`` (relative 2-norm) and ``error`` (relative 2-norm,
-    if ``x_exact`` is given), each starting with the value for ``x0``.
+    histories ``residual`` and ``error`` (if ``x_exact`` is given), each
+    starting with the value for ``x0``. Norms are relative 2-norms unless
+    ``b`` or ``x_exact`` is zero, respectively; that history then uses the
+    absolute 2-norm. For zero ``b``, ``tol`` is an absolute residual tolerance.
     """
     x = np.array(x0, dtype=float)
     nb = float(np.linalg.norm(b))
     nx = float(np.linalg.norm(x_exact)) if x_exact is not None else None
-    res = [float(np.linalg.norm(b - A @ x)) / nb]
-    err = [float(np.linalg.norm(x - x_exact)) / nx] if x_exact is not None else []
+    residual_scale = nb if nb > 0 else 1.0
+    error_scale = nx if nx is not None and nx > 0 else 1.0
+    res = [float(np.linalg.norm(b - A @ x)) / residual_scale]
+    err = [float(np.linalg.norm(x - x_exact)) / error_scale] if x_exact is not None else []
     k = 0
     with np.errstate(over="ignore", invalid="ignore"):
         while k < maxit and res[-1] > tol:
             x = check_output(sweep(A, b, x), x, name)
             k += 1
-            r = float(np.linalg.norm(b - A @ x)) / nb
+            r = float(np.linalg.norm(b - A @ x)) / residual_scale
             res.append(r)
             if x_exact is not None:
-                err.append(float(np.linalg.norm(x - x_exact)) / nx)
+                err.append(float(np.linalg.norm(x - x_exact)) / error_scale)
             if not np.isfinite(r) or r > 1e12:
                 break
     return {"sweeps": k, "x": x, "converged": res[-1] <= tol, "residual": res, "error": err}

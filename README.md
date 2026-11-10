@@ -39,6 +39,10 @@ python verify.py
    `report/verification-report.html` in a browser.
 4. When all methods pass, choose a [project brief](briefs/README.md).
 
+Before submitting, run `python verify.py --strict`. This requires all three
+methods to be implemented and pass every gate. Ordinary local runs let you
+check unfinished work; GitHub Actions uses strict checking automatically.
+
 Everything runs offline, in a few seconds, on a modest laptop.
 
 ## For supervisors

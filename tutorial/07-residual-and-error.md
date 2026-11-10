@@ -13,6 +13,12 @@ $$
 The provided code stops when the relative residual $\lVert r \rVert / \lVert b \rVert$
 falls below a tolerance (for example $10^{-8}$).
 
+For a homogeneous system ($b = 0$), this relative residual is undefined. The
+provided driver then uses the absolute 2-norm $\lVert r \rVert$, so the
+tolerance is absolute. Likewise, if a supplied exact solution is zero, its
+error history uses $\lVert x^{(k)} - x^* \rVert$ without normalization. The
+relative-error bound below applies when $b$ and $x^*$ are nonzero.
+
 ## A small residual does not mean a small error
 
 From $e = -A^{-1} r$ it follows that

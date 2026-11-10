@@ -1,8 +1,9 @@
 # 3. Primer: the iteration matrix and the spectral radius
 
 This section is the heart of the unit. A table of iterates shows *that* a
-method converged; the theory below says *how fast* it must converge, and the
-checks compare the two.
+method converged; the theory below explains convergence and helps estimate
+its eventual rate. The checks compare that estimate with a measured factor
+on a specified test problem.
 
 ## The error obeys a linear recurrence
 
@@ -17,22 +18,34 @@ $$
 
 $T$ is the **iteration matrix**. Every method in this unit has one (section 4).
 
-## The spectral radius decides everything
+## Convergence and the spectral radius
 
 The **spectral radius** $\rho(T)$ is the largest absolute value of the
-eigenvalues of $T$. Two facts follow from $e^{(k)} = T^k e^{(0)}$:
+eigenvalues of $T$. The method converges for every starting vector **if and
+only if** $\rho(T) < 1$.
 
-- the method converges for every starting vector **if and only if**
-  $\rho(T) < 1$;
-- after the first few sweeps, the error falls by a factor of about $\rho(T)$
-  per sweep: $\lVert e^{(k+1)} \rVert \approx \rho(T)\,\lVert e^{(k)} \rVert$.
+The error norm need not decrease by exactly $\rho(T)$ at each sweep. If a
+single dominant eigenmode is present in the initial error and eventually
+dominates the other modes, its decay gives the approximation
 
-So the number of sweeps to reduce the error by a factor $\varepsilon$ (say
-$10^{-8}$) is about
+$$
+\lVert e^{(k+1)} \rVert \approx \rho(T)\,\lVert e^{(k)} \rVert.
+$$
+
+Transient behavior can last many sweeps, and competing modes can make the
+stepwise ratios oscillate. The initial error can also miss the slowest mode:
+for $T = \operatorname{diag}(0.9, 0.5)$ and $e^{(0)} = (0,1)^\top$, the error
+decreases by $0.5$ at every sweep, although $\rho(T) = 0.9$.
+
+When a factor near $\rho(T)$ describes the decay, an estimate for the sweeps
+needed to reduce the error by a factor $\varepsilon$ (say $10^{-8}$) is
 
 $$
 k \approx \frac{\log \varepsilon}{\log \rho(T)}.
 $$
+
+This estimate ignores transient behavior and constant factors; it is not an
+exact stopping count.
 
 ## Measuring the factor
 
@@ -44,7 +57,10 @@ $$
 
 Gate G3 measures it on the 1D Poisson problem L3 ($n = 20$) between sweeps 100
 and 200, and compares it with $\rho(T)$ computed from the eigenvalues of $T$.
-A correct sweep matches to about six digits; the gate allows 0.1%.
+For the prescribed matrix, starting vector, sweep window and relaxation
+factor, the reference implementations match to about six digits; the gate
+allows 0.1%. This is a finite-window check on this problem, rather than a
+claim about every error ratio for every matrix.
 
 ## The model problem
 

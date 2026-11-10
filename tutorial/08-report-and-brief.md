@@ -8,10 +8,17 @@ Run `python verify.py` and open `report/verification-report.html`.
 |---|---|
 | G1 One sweep matches the method | Does one sweep give the same numbers as the method, up to rounding? |
 | G2 No side effects | Are `A`, `b` and `x` unchanged, and is the result a new array? |
-| G3 Observed factor matches $\rho(T)$ | Does the error fall by exactly the factor the theory predicts? |
+| G3 Observed factor matches $\rho(T)$ | Does the average factor on the specified Poisson problem match the spectral radius within tolerance? |
 | G4 Reaches the solution | Does the iteration solve a larger (36-unknown) system? |
 
 When a gate fails, the report gives a hint. Fix the code and run again.
+
+## Checking a completed submission
+
+Run `python verify.py --strict` before submitting. It writes the report and
+returns a failure status if any method is missing, unimplemented, or fails a
+gate. An ordinary local run supports checking work in progress; its successful
+exit alone does not mean all methods passed. GitHub Actions uses strict mode.
 
 ## Reported results (no pass mark)
 

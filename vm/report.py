@@ -382,7 +382,7 @@ def build_html(results, meta) -> str:
 {warn}
 <h2>Summary</h2>
 {_summary_table(results)}
-<p class="note">A method passes when all four gates pass. Gate G3 accepts an observed convergence factor within {FACTOR_RTOL * 100:g}% of the spectral radius rho(T). Details for each method follow the statement below.</p>
+<p class="note">A method passes when all four gates pass. On the specified Poisson problem, gate G3 accepts an average convergence factor over sweeps 100 to 200 within {FACTOR_RTOL * 100:g}% of the spectral radius rho(T). This does not require every stepwise error ratio to equal rho(T). Details for each method follow the statement below.</p>
 {figs}
 <h2>AI-use disclosure</h2>
 <p>{_e(ai) if ai else '(not given)'}</p>

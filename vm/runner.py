@@ -16,7 +16,7 @@ from pathlib import Path
 
 from . import UNIT_ID, UNIT_TITLE, __version__
 from .checks import SUMMARY_GATE, SUMMARY_LABEL, load_expected, run_all
-from .fingerprint import file_sha256, suite_fingerprint
+from .fingerprint import source_sha256, suite_fingerprint
 from .report import build_html, build_json
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -26,14 +26,14 @@ EXPECTED_IMPORTS = {"numpy", "math"}
 SUSPICIOUS_CALLS = {"__import__", "exec", "eval", "compile", "open", "globals", "setattr"}
 
 
-def scan_imports(path: Path):
-    """Modules imported by the student's file (read with ast, not run), and anything unexpected.
+def scan_imports(path: Path, source: bytes | None = None):
+    """Imports in a source snapshot (read with ast, not run), and anything unexpected.
 
     The units need only NumPy. Other imports or calls such as exec() are not
     forbidden, but a supervisor should look at the file before trusting the report.
     """
     try:
-        tree = ast.parse(Path(path).read_text(encoding="utf-8", errors="replace"))
+        tree = ast.parse(Path(path).read_bytes() if source is None else source)
     except SyntaxError:
         return [], []
     found = set()
@@ -72,12 +72,14 @@ def read_info(path: Path) -> dict:
     return {k: info.get(k, "") for k in INFO_FIELDS}
 
 
-def load_steps(path: Path):
+def load_steps(path: Path, source: bytes | None = None):
+    """Execute a source snapshot directly, never a cached .pyc file."""
     spec = importlib.util.spec_from_file_location("student_steps", path)
     if spec is None or spec.loader is None:
         raise ImportError(f"cannot load {path}")
     module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
+    code = compile(Path(path).read_bytes() if source is None else source, str(path), "exec", dont_inherit=True)
+    exec(code, module.__dict__)
     return module
 
 
@@ -112,8 +114,12 @@ def main(argv=None) -> int:
     ap.add_argument("--info", type=Path, default=None,
                     help="student information file (default: student_info.txt next to the steps file)")
     ap.add_argument("--out", type=Path, default=ROOT / "report", help="folder for the report (default: report)")
+    ap.add_argument("--strict", action="store_true",
+                    help="require every method to be implemented and pass all gates (submission check)")
     ap.add_argument("--ci", action="store_true", help=argparse.SUPPRESS)
     args = ap.parse_args(argv)
+    ci = args.ci or os.environ.get("GITHUB_ACTIONS") == "true"
+    strict = args.strict or ci
 
     steps_path = args.steps.resolve()
     info_path = (args.info or steps_path.parent / "student_info.txt").resolve()
@@ -123,7 +129,10 @@ def main(argv=None) -> int:
         print(f"Cannot find {steps_path}.")
         return 2
     try:
-        module = load_steps(steps_path)
+        source = steps_path.read_bytes()
+        student_fingerprint = source_sha256(source)
+        student_imports = scan_imports(steps_path, source)
+        module = load_steps(steps_path, source)
     except Exception as exc:  # syntax errors and import errors in the student's file
         line = getattr(exc, "lineno", None)
         where = f" (line {line})" if line else ""
@@ -141,15 +150,14 @@ def main(argv=None) -> int:
         for line in printed[:5]:
             print("    " + line[:200])
 
-    ci = args.ci or os.environ.get("GITHUB_ACTIONS") == "true"
     meta = {
         "unit": {"id": UNIT_ID, "title": UNIT_TITLE, "version": __version__},
         "generated_at": _dt.datetime.now(_dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
         "mode": "ci" if ci else "local",
         "mode_label": "GitHub Actions run" if ci else "local run",
         "student": read_info(info_path),
-        "fingerprints": {"student_code": file_sha256(steps_path), "check_suite": suite_fingerprint()},
-        "student_code": dict(zip(("imports", "unexpected"), scan_imports(steps_path))),
+        "fingerprints": {"student_code": student_fingerprint, "check_suite": suite_fingerprint()},
+        "student_code": dict(zip(("imports", "unexpected"), student_imports)),
         "environment": environment(),
     }
     if ci:
@@ -173,6 +181,7 @@ def main(argv=None) -> int:
         label = f"  {r.spec.name:<14}"
         if r.status != "checked":
             print(f"{label} {r.message}")
+            any_failed = any_failed or strict
             continue
         g = next((g for g in r.gates if g.id == SUMMARY_GATE), None)
         extra = f"   {SUMMARY_LABEL} {g.value:.6f}" if g is not None and g.value is not None else ""
@@ -185,6 +194,8 @@ def main(argv=None) -> int:
         else:
             for g in failed:
                 print(f"      {g.id} FAILED ({g.title}): {g.hint or g.measured}")
+    if strict and any(r.status != "checked" for r in results):
+        print("Incomplete submission: implement every method and pass all gates.")
     unexpected = meta["student_code"]["unexpected"]
     if unexpected:
         print(f"Note: steps.py uses {', '.join(unexpected)}. The methods need only NumPy; "

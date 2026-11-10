@@ -12,15 +12,15 @@ Python set up once, as in tutorial section 0.
 2. Download a fresh copy of the unit (the same version as on the report).
 3. Copy the student's `student` folder into it, replacing the one there.
 4. In the unit's main folder (the one that contains `verify.py`), run
-   `python verify.py`.
-4. Compare your report with the student's: the gates should match, and so should
+   `python verify.py --strict`.
+5. Compare your report with the student's: the gates should match, and so should
    the **student-code fingerprint**. Your **check-suite fingerprint** should
    match the value published for this version on the unit's page.
 
 Alternatively, point the checks at the student's file directly:
 
 ```
-python verify.py --steps path/to/student/steps.py
+python verify.py --strict --steps path/to/student/steps.py
 ```
 
 This takes about two minutes. Passing the gates is strong evidence that the code
