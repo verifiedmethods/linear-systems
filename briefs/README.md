@@ -22,15 +22,21 @@ from vm.study import iteration_matrix, spectral_radius, observed_factor
 from student.steps import jacobi_sweep, gauss_seidel_sweep, sor_sweep
 
 p = PROBLEMS["L3n20"]                       # or build your own system (below)
-out = iterate(jacobi_sweep, p.A, p.b, np.zeros(p.n), tol=1e-8, x_exact=p.x_exact)
-print(out["sweeps"], out["residual"][-1], out["error"][-1])
+out = iterate(jacobi_sweep, p.A, p.b, np.zeros(p.n), tol=1e-8,
+              maxit=40_000, x_exact=p.x_exact)
+print("Residual tolerance reached:", out["converged"])
+print("Sweeps used:", out["sweeps"], "final residual:", out["residual"][-1],
+      "final error:", out["error"][-1])
 
 rho = spectral_radius(iteration_matrix(p.A, "jacobi"))   # "gauss_seidel" or "sor" (with omega=...)
 sor = lambda A, b, x: sor_sweep(A, b, x, 1.5)            # SOR with a fixed omega, as a three-argument sweep
 ```
 
 `iterate` returns the number of sweeps, the final `x`, and the histories of the
-relative residual and (if you give `x_exact`) the relative error.
+relative residual and (if you give `x_exact`) the relative error. Entry zero
+in each history describes the starting vector. Check `out["converged"]` before
+using the sweep count as the number needed for a residual tolerance. Brief 1
+shows how to measure a target on the error itself.
 
 ## Your own system
 
@@ -39,3 +45,13 @@ A = np.array([[4.0, -1, 0], [-1, 4, -1], [0, -1, 4]])
 x_exact = np.array([1.0, 2.0, 3.0])
 mine = LinearProblem(id="M1", title="my system", A=A, x_exact=x_exact)   # mine.b is A @ x_exact
 ```
+
+## Handing in a completed project
+
+Include the `student` folder, the verification report, your write-up and the
+scripts that produced the tables and figures for your brief. Include any
+additional input data you used, or explain how to obtain them. Give the
+lecturer the commands to run from the unit folder, in order, and say which
+outputs each command produces. Record the grid sizes, tolerances, sweep
+budgets, relaxation factors and any random seed in the scripts or accompanying
+instructions. Check the commands in a fresh copy of the same unit version.

@@ -3,7 +3,7 @@
 Part of **verifiedmethods**: open, verification-first units for the
 computational methods used in Nigerian STEM projects and theses.
 
-> **Status:** pilot prerelease (version 0.1.0a1), for small teaching trials.
+> **Status:** pilot version 0.1.0a2, for small teaching trials.
 >
 > Website: https://verifiedmethods.github.io · Contact: abdgafartunde@yahoo.com
 

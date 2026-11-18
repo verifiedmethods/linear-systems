@@ -10,8 +10,11 @@ $$
 r = b - A x^{(k)} = -A e .
 $$
 
-The provided code stops when the relative residual $\lVert r \rVert / \lVert b \rVert$
-falls below a tolerance (for example $10^{-8}$).
+The driver counts a run as converged when the relative residual
+$\lVert r \rVert / \lVert b \rVert$ reaches or falls below the requested
+tolerance (for example $10^{-8}$). Check `out["converged"]` in your own
+scripts. A run can also end at its sweep limit or when the residual becomes
+excessively large or nonfinite.
 
 For a homogeneous system ($b = 0$), this relative residual is undefined. The
 provided driver then uses the absolute 2-norm $\lVert r \rVert$, so the
@@ -42,8 +45,9 @@ error*; iterating far beyond it wastes work. Brief 2 explores this.
 
 ## Using AI tools
 
-You may use AI tools to understand the methods or to find a bug, if you say so
-in `student_info.txt`. Write the three sweep functions yourself; if any part of
-your code came from an AI tool or another person, say so in your disclosure and
-in `CONTRIBUTION.md`. Your analysis and write-up must be your own, and you must
-be able to explain every line of your code in your viva.
+Follow your course's assessment and AI rules. If your course permits AI help
+with understanding a method or finding a bug, describe any such help in
+`student_info.txt`. Write the three sweep functions yourself. Identify any
+code you received from an AI tool or another person in your disclosure and
+in `CONTRIBUTION.md`. Your analysis and write-up must be your own, and you
+must be able to explain every line of your code in your viva.

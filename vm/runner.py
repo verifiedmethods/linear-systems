@@ -15,7 +15,7 @@ import sys
 from pathlib import Path
 
 from . import UNIT_ID, UNIT_TITLE, __version__
-from .checks import SUMMARY_GATE, SUMMARY_LABEL, load_expected, run_all
+from .checks import METHODS, SUMMARY_GATE, SUMMARY_LABEL, MethodResult, load_expected, run_all
 from .fingerprint import source_sha256, suite_fingerprint
 from .report import build_html, build_json
 
@@ -125,30 +125,31 @@ def main(argv=None) -> int:
     info_path = (args.info or steps_path.parent / "student_info.txt").resolve()
     print(f"verifiedmethods {UNIT_ID}: {UNIT_TITLE} (version {__version__})")
 
-    if not steps_path.exists():
-        print(f"Cannot find {steps_path}.")
-        return 2
+    student_fingerprint = None
+    student_imports = ([], [])
+    load_error = None
     try:
         source = steps_path.read_bytes()
         student_fingerprint = source_sha256(source)
         student_imports = scan_imports(steps_path, source)
         module = load_steps(steps_path, source)
-    except Exception as exc:  # syntax errors and import errors in the student's file
+    except (Exception, SystemExit) as exc:
         line = getattr(exc, "lineno", None)
         where = f" (line {line})" if line else ""
-        print(f"Python could not read {steps_path.name}{where}: {type(exc).__name__}: {exc}")
+        load_error = f"Python could not load {steps_path.name}{where}: {type(exc).__name__}: {exc}"
+        print(load_error)
         print("Fix this first, then run python verify.py again.")
-        return 2
-
-    print("Running the checks (a few seconds; the first run can take longer)...")
-    captured = io.StringIO()
-    with contextlib.redirect_stdout(captured):  # keep the student's own print() output from flooding the summary
-        results = run_all(module, str(steps_path), load_expected())
-    printed = captured.getvalue().splitlines()
-    if printed:
-        print(f"Your code printed {len(printed)} line(s) during the checks; the first few:")
-        for line in printed[:5]:
-            print("    " + line[:200])
+        results = [MethodResult(spec, "not run", message="The student file could not be loaded.") for spec in METHODS]
+    else:
+        print("Running the checks (a few seconds; the first run can take longer)...")
+        captured = io.StringIO()
+        with contextlib.redirect_stdout(captured):
+            results = run_all(module, str(steps_path), load_expected())
+        printed = captured.getvalue().splitlines()
+        if printed:
+            print(f"Your code printed {len(printed)} line(s) during the checks; the first few:")
+            for line in printed[:5]:
+                print("    " + line[:200])
 
     meta = {
         "unit": {"id": UNIT_ID, "title": UNIT_TITLE, "version": __version__},
@@ -160,6 +161,8 @@ def main(argv=None) -> int:
         "student_code": dict(zip(("imports", "unexpected"), student_imports)),
         "environment": environment(),
     }
+    if load_error:
+        meta["load_error"] = load_error
     if ci:
         server = os.environ.get("GITHUB_SERVER_URL", "https://github.com")
         repo = os.environ.get("GITHUB_REPOSITORY", "")
@@ -194,7 +197,7 @@ def main(argv=None) -> int:
         else:
             for g in failed:
                 print(f"      {g.id} FAILED ({g.title}): {g.hint or g.measured}")
-    if strict and any(r.status != "checked" for r in results):
+    if strict and not load_error and any(r.status != "checked" for r in results):
         print("Incomplete submission: implement every method and pass all gates.")
     unexpected = meta["student_code"]["unexpected"]
     if unexpected:
@@ -213,4 +216,6 @@ def main(argv=None) -> int:
                 res = (f"{r.n_passed}/{len(r.gates)} gates" if r.status == "checked" else r.status)
                 fh.write(f"| {r.spec.name} | {res} |\n")
             fh.write("\nDownload the full report from the run's artifacts.\n")
+    if load_error:
+        return 2
     return 1 if any_failed else 0

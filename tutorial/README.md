@@ -28,7 +28,9 @@ not required.
 
 **What you hand in:** your `student` folder (including `steps.py`,
 `student_info.txt` and completed `CONTRIBUTION.md`), your verification report,
-and the agreed assignment or project write-up.
+and the agreed assignment or project write-up. For a project brief, also
+submit the experiment scripts or notebooks, any additional inputs, and the
+command and working directory that reproduce a named figure or table.
 
 **Further reading:** Driscoll and Braun's
 [*Fundamentals of Numerical Computation*, Python edition](https://fncbook.com/python/)

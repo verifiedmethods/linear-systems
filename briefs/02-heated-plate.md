@@ -38,15 +38,19 @@ they stop?
 
 ## What you must produce
 
-1. **Two errors.** For $m = 5, 10, 20$ (and 40 for SOR), compute the
-   *discretisation error* (direct solution `np.linalg.solve(A, b)` against the
-   exact solution) and show that it falls like $h^2$.
+1. **Discretisation error.** For $m = 5, 10, 20$ (optionally 40 for SOR),
+   compute `direct = np.linalg.solve(A, b)`. Measure the largest absolute
+   temperature error at an interior grid point with
+   `np.max(np.abs(direct - exact))`. Estimate its order in $h$ and compare it
+   with the expected second order.
 2. **Sweeps against grid size** for each method, to a relative residual of
    $10^{-8}$. How do the counts grow with $m$? Use $\rho(T)$ to explain.
-3. **When to stop.** For each grid, find the residual tolerance at which the
-   *iteration error* (iterate against direct solution) becomes smaller than the
-   discretisation error. How many sweeps does stopping there save, compared with
-   a tolerance of $10^{-8}$?
+3. **When to stop.** For each grid, try a range of residual tolerances.
+   For each converged run, compute the *iteration error* in the same
+   maximum norm, `np.max(np.abs(out["x"] - direct))`. Report the loosest
+   tolerance you tested for which this error is smaller than the
+   discretisation error. How many sweeps does it save compared with a
+   relative residual tolerance of $10^{-8}$?
 4. **Plot** the temperature on the finest grid you used (`plt.contourf`), and
    the error.
 5. **Verification report** with all gates passed, and your completed

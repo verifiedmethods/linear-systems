@@ -48,4 +48,6 @@ supervisor:
 3. [When do iterative methods converge?](../briefs/03-convergence-conditions.md)
 
 Include in your appendix: the verification report, your completed
-`student/CONTRIBUTION.md`, and your `steps.py`.
+`student/CONTRIBUTION.md`, and your `steps.py`. Submit your project scripts
+or notebooks alongside the appendix, with their additional inputs and the
+command that regenerates a named result.

@@ -49,6 +49,38 @@ def test_loader_keeps_the_students_annotation_semantics(tmp_path):
     assert runner.load_steps(path).step.__annotations__ == {"x": int, "return": int}
 
 
+@pytest.mark.parametrize("bad_source, error", [
+    (b"def incomplete(", "SyntaxError"),
+    (b"raise ImportError('<load failed>')", "ImportError"),
+    (None, "FileNotFoundError"),
+])
+def test_failed_load_replaces_both_reports(root, tmp_path, bad_source, error):
+    steps = tmp_path / "steps.py"
+    steps.write_bytes((root / "student" / "steps.py").read_bytes())
+    out = tmp_path / "report"
+    args = ["--strict", "--steps", str(steps), "--out", str(out)]
+    assert runner.main(args) == 1
+    previous = json.loads((out / "verification-report.json").read_text(encoding="utf-8"))
+    assert all(method["status"] == "not implemented" for method in previous["results"])
+
+    if bad_source is None:
+        steps.unlink()
+    else:
+        steps.write_bytes(bad_source)
+    assert runner.main(args) == 2
+    current = json.loads((out / "verification-report.json").read_text(encoding="utf-8"))
+    assert error in current["load_error"]
+    assert current["fingerprints"]["student_code"] == (
+        hashlib.sha256(bad_source).hexdigest() if bad_source is not None else None
+    )
+    assert [method["status"] for method in current["results"]] == ["not run"] * 3
+    assert all(method["gates"] == [] for method in current["results"])
+    html = (out / "verification-report.html").read_text(encoding="utf-8")
+    assert "No gates ran." in html and error in html
+    assert "<load failed>" not in html
+    assert previous["fingerprints"]["student_code"] not in html
+
+
 @pytest.mark.parametrize("mode", ["--strict", "--ci", "actions_environment"])
 @pytest.mark.parametrize("submission", ["missing", "stubs"])
 def test_submission_modes_reject_incomplete_work(root, tmp_path, monkeypatch, mode, submission):

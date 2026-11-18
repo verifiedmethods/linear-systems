@@ -6,7 +6,7 @@ import math
 
 import numpy as np
 
-from .iterate import check_output
+from .iterate import check_output, sweep_inputs
 
 
 def splitting(A):
@@ -35,11 +35,12 @@ def observed_factor(sweep, A, b, x_exact, k0: int, k1: int, name="sweep", return
 
     With ``return_errors=True``, return ``(factor, ||e_k0|| / ||x_exact||, ||e_k1|| / ||x_exact||)``.
     """
+    sweep_A, sweep_b = sweep_inputs(A, b)
     x = np.zeros_like(b)
     e0 = None
     with np.errstate(over="ignore", invalid="ignore"):
         for k in range(1, k1 + 1):
-            x = check_output(sweep(A, b, x), x, name)
+            x = check_output(sweep(sweep_A, sweep_b, x), x, name)
             if k == k0:
                 e0 = float(np.linalg.norm(x - x_exact))
     e1 = float(np.linalg.norm(x - x_exact))

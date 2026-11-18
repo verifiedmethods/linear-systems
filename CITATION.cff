@@ -7,8 +7,8 @@ authors:
     given-names: "Abd'gafar Tunde"
     orcid: "https://orcid.org/0000-0003-1641-7196"
     affiliation: "School of Mathematics, Jilin University"
-version: "0.1.0a1"
-date-released: "2026-11-11"
+version: "0.1.0a2"
+date-released: "2026-11-18"
 license:
   - BSD-3-Clause
   - CC-BY-4.0

@@ -25,6 +25,11 @@ Alternatively, point the checks at the student's file directly:
 python verify.py --strict --steps path/to/student/steps.py
 ```
 
+For a project brief, choose a figure or table in the write-up. Inspect the
+submitted experiment script or notebook, put it and its inputs in their
+documented locations in the fresh unit, and run the student's command from
+the stated directory. Compare the regenerated result with the write-up.
+
 Passing gives evidence about the stated test cases, not a proof for every
 input or a validation of the whole project. A fingerprint identifies code;
 it does not authenticate an HTML report. Your rerun confirms the results,

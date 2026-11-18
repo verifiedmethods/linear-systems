@@ -9,6 +9,15 @@ class StudentCodeError(Exception):
     """A sweep returned something the driver cannot use."""
 
 
+def sweep_inputs(A, b):
+    """Give a sweep its own fixed system for one experiment."""
+    matrix = np.array(A, copy=True)
+    rhs = np.array(b, copy=True)
+    matrix.setflags(write=False)
+    rhs.setflags(write=False)
+    return matrix, rhs
+
+
 def check_output(result, x: np.ndarray, name: str) -> np.ndarray:
     """Return ``result`` as a float array with the shape of ``x``, or explain why not."""
     if result is None:
@@ -33,6 +42,7 @@ def iterate(sweep, A, b, x0, tol=1e-8, maxit=10000, x_exact=None, name="sweep"):
     ``b`` or ``x_exact`` is zero, respectively; that history then uses the
     absolute 2-norm. For zero ``b``, ``tol`` is an absolute residual tolerance.
     """
+    sweep_A, sweep_b = sweep_inputs(A, b)
     x = np.array(x0, dtype=float)
     nb = float(np.linalg.norm(b))
     nx = float(np.linalg.norm(x_exact)) if x_exact is not None else None
@@ -43,7 +53,7 @@ def iterate(sweep, A, b, x0, tol=1e-8, maxit=10000, x_exact=None, name="sweep"):
     k = 0
     with np.errstate(over="ignore", invalid="ignore"):
         while k < maxit and res[-1] > tol:
-            x = check_output(sweep(A, b, x), x, name)
+            x = check_output(sweep(sweep_A, sweep_b, x), x, name)
             k += 1
             r = float(np.linalg.norm(b - A @ x)) / residual_scale
             res.append(r)
